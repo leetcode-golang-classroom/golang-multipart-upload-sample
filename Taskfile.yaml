@@ -1,0 +1,37 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - echo "This is task cmd"
+    silent: true
+  
+  build-server:
+    cmds:
+      - CGO_ENABLED=0 GOOS=linux go build -o bin/server cmd/server/main.go
+    silent: true
+  run-server:
+    cmds:
+      - ./bin/server
+    deps:
+      - build-server
+    silent: true
+  build-client:
+    cmds:
+      - CGO_ENABLED=0 GOOS=linux go build -o bin/client cmd/client/main.go
+    silent: true
+  run-client:
+    cmds:
+      - ./bin/client
+    deps:
+      - build-client
+    silent: true
+  coverage:
+    cmds:
+      - go test -v -cover ./...
+    silent: true
+  test:
+    cmds:
+      - go test -v ./...
+    silent: true
+  
